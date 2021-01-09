@@ -13,9 +13,9 @@ default-impl = ["ureq", "roxmltree"]
 default = ["default-impl"]
 
 [dependencies]
-log = "*"
-ureq = { optional = true, version = "*", default-features = false, features = ["tls"] }
-roxmltree = { optional = true, version = "*" }
+log = "0.4.11"
+ureq = { optional = true, version = "2.0.0", default-features = false, features = ["tls"] }
+roxmltree = { optional = true, version = "0.14.0" }
 
 [dev-dependencies]
-env_logger = "*"
+env_logger = "0.8.2"
