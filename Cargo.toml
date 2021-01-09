@@ -1,0 +1,17 @@
+[package]
+name = "maven-toolbox"
+version = "0.0.1"
+authors = ["Ivan Bodrov <ibodrov@gmail.com>"]
+edition = "2018"
+
+[features]
+default-impl = ["ureq", "roxmltree"]
+default = ["default-impl"]
+
+[dependencies]
+log = "*"
+ureq = { optional = true, version = "*", default-features = false, features = ["tls"] }
+roxmltree = { optional = true, version = "*" }
+
+[dev-dependencies]
+env_logger = "*"
