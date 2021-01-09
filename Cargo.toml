@@ -1,8 +1,12 @@
 [package]
 name = "maven-toolbox"
+description = "A collection of Maven-related utilities."
 version = "0.0.1"
 authors = ["Ivan Bodrov <ibodrov@gmail.com>"]
 edition = "2018"
+license = "Apache-2.0"
+repository = "https://github.com/concord-workflow/maven-toolbox-rs"
+readme = "README.md"
 
 [features]
 default-impl = ["ureq", "roxmltree"]
