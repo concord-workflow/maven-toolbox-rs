@@ -1,3 +1,33 @@
+//! Utilities to work with Maven project files and repositories implemented in
+//! Rust.
+//!
+//! # Quick Start
+//!
+//! ```
+//! use maven_toolbox::{default_impl::*, *};
+//!
+//! // the artifact's GAV
+//! let artifact = ArtifactFqn::pom(
+//!     "com.walmartlabs.concord.plugins.basic",
+//!     "smtp-tasks",
+//!     "1.76.1",
+//! );
+//!
+//! let mut resolver = Resolver::default();
+//!
+//! // default implementations, you can plug in your own
+//! let url_fetcher = DefaultUrlFetcher {};
+//! let pom_parser = DefaultPomParser {};
+//!
+//! let project = resolver
+//!     .build_effective_pom(&artifact, &url_fetcher, &pom_parser)
+//!     .unwrap();
+//! ```
+//!
+//! The `build_effective_pom` call requires a [`UrlFetcher`] and a [`PomParser`].
+//! The [`default_impl`] module provides minimal implementations of of those
+//! traits.
+
 use std::collections::HashMap;
 
 #[cfg(feature = "default-impl")]
