@@ -1,7 +1,7 @@
 [package]
 name = "maven-toolbox"
 description = "A collection of Maven-related utilities."
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Ivan Bodrov <ibodrov@gmail.com>"]
 edition = "2018"
 license = "Apache-2.0"
