@@ -39,9 +39,27 @@ pub struct ArtifactFqn {
     pub artifact_id: Option<String>,
     pub version: Option<String>,
     pub packaging: Option<String>,
+    pub classifier: Option<String>,
 }
 
 impl ArtifactFqn {
+    pub fn new(
+        group_id: &str,
+        artifact_id: &str,
+        version: &str,
+        packaging: &str,
+        classifier: &str,
+    ) -> Self {
+        ArtifactFqn {
+            group_id: Some(group_id.to_owned()),
+            artifact_id: Some(artifact_id.to_owned()),
+            version: Some(version.to_owned()),
+            packaging: Some(packaging.to_owned()),
+            classifier: Some(classifier.to_owned()),
+            ..Default::default()
+        }
+    }
+
     pub fn pom(group_id: &str, artifact_id: &str, version: &str) -> Self {
         ArtifactFqn {
             group_id: Some(group_id.to_owned()),
@@ -94,6 +112,7 @@ impl ArtifactFqn {
             packaging: self
                 .packaging
                 .or_else(|| Some(default_packaging.to_owned())),
+            ..Default::default()
         }
     }
 }
@@ -103,11 +122,12 @@ impl std::fmt::Display for ArtifactFqn {
         let def = "?".to_owned();
         write!(
             f,
-            "{}:{}:{}:{}",
+            "{}:{}:{}:{}:{}",
             self.group_id.as_ref().unwrap_or(&def),
             self.artifact_id.as_ref().unwrap_or(&def),
             self.version.as_ref().unwrap_or(&def),
-            self.packaging.as_ref().unwrap_or(&def)
+            self.packaging.as_ref().unwrap_or(&def),
+            self.classifier.as_ref().unwrap_or(&def)
         )
     }
 }
@@ -268,16 +288,23 @@ impl Resolver {
         let version = require(id, |id| id.version.as_ref(), &"version")?;
         let packaging = require(id, |id| id.packaging.as_ref(), &"packaging")?;
 
-        Ok(format!(
-            "{}/{}/{}/{}/{}-{}.{}",
+        let mut url = format!(
+            "{}/{}/{}/{}/{}-{}",
             self.repository.base_url,
             group_id.replace(".", "/"),
             artifact_id,
             version,
             artifact_id,
-            version,
-            packaging
-        ))
+            version
+        );
+
+        if let Some(classifier) = &id.classifier {
+            url += &format!("-{}", classifier);
+        }
+
+        url += &format!(".{}", packaging);
+
+        Ok(url)
     }
 
     pub fn build_effective_pom<UF, P>(

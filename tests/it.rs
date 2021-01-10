@@ -76,3 +76,19 @@ fn test_fetch_project() {
     assert_eq!("parent", parent.artifact_fqn.artifact_id.unwrap());
     assert_eq!(2, resolver.project_cache.len());
 }
+
+#[test]
+#[cfg(feature = "default-impl")]
+fn test_classifier() {
+    let root = ArtifactFqn::new(
+        "com.walmartlabs.concord.runtime.v2",
+        "concord-runner-v2",
+        "1.77.0",
+        "jar",
+        "jar-with-dependencies"
+    );
+
+    let resolver = Resolver::default();
+    let url = resolver.create_url(&root).unwrap();
+    assert_eq!("https://repo.maven.apache.org/maven2/com/walmartlabs/concord/runtime/v2/concord-runner-v2/1.77.0/concord-runner-v2-1.77.0-jar-with-dependencies.jar", url);
+}

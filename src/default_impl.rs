@@ -1,5 +1,4 @@
 use crate::*;
-
 pub struct DefaultUrlFetcher {}
 
 impl UrlFetcher for DefaultUrlFetcher {
@@ -29,6 +28,7 @@ fn parse_gav(n: &roxmltree::Node) -> ArtifactFqn {
         artifact_id: node_text(n, "artifactId"),
         version: node_text(n, "version"),
         packaging: node_text(n, "type").or_else(|| node_text(n, "packaging")), // TODO dirty hack
+        classifier: node_text(n, "classifier"),
     }
 }
 
